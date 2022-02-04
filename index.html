@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" /><title>Mon 1er jeu Phaser</title>
+        <meta charset="UTF-8" /><title>Massacre à la montagne</title>
         <script
         src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
         <style type="text/css"> body { margin: 0; }</style>
@@ -11,11 +11,11 @@
         <script type="text/javascript">
             var config = {
                 type: Phaser.AUTO,
-                width: 800, height: 600,
+                width: 1920, height: 1080,
                 physics: {
                     default: 'arcade',
                     arcade: {
-                        gravity: { y: 300 },
+                        gravity: { y: 400 },
                         debug: false
                     }
                 },
@@ -27,6 +27,7 @@
                 this.load.image('ground', 'assets/platform.png');
                 this.load.image('sky', 'assets/sky.png');
                 this.load.image('bomb', 'assets/bomb.png');
+                this.load.image('Montagne', 'assets/Montagne-PNG.png');
                 this.load.spritesheet('perso','assets/perso.png',
                 { frameWidth: 32, frameHeight: 48 });
             }
@@ -48,19 +49,63 @@
             var scoreText;
 
             //vitesse
-            var gravite_joueur = 400;
-            var vitesse_saut = 600;
+            var gravite_joueur = 000;
+            var vitesse_saut = 300;
+
+            //camera
+            var iter = 0;
+            var horizontalCamera;
+            var verticalCamera;
+            var circularCamera;
+
+            class Example extends Phaser.Scene
+{
+    constructor ()
+    {
+        super();
+    }
+}
+
+
 
             function create(){
                 this.add.image(400, 300, 'sky');
-                this.add.image(400, 300, 'star');
+                this.add.image(4000, 3000, 'star');
                 platforms = this.physics.add.staticGroup();
-                platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-                platforms.create(600, 400, 'ground');
-                platforms.create(50, 250, 'ground');
-                platforms.create(750, 220, 'ground');
+                platforms.create(400, 1050, 'ground').setScale(2).refreshBody();
+                platforms.create(1800, 800, 'ground');
+                platforms.create(1800, 700, 'ground');
+                platforms.create(2000, 700, 'ground');
+                platforms.create(2000, 460, 'ground');
+                platforms.create(2500, 460, 'ground');
+                platforms.create(2800, 580, 'ground');
+                platforms.create(1800, 580, 'ground');
+                platforms.create(2650, 1000, 'ground');
+                platforms.create(1600, 800, 'ground');
+                platforms.create(2800, 800, 'ground');
+               
+                platforms.create(300, 800, 'ground');
+                platforms.create(600, 700, 'ground');
+                platforms.create(1200, 800, 'ground');
+                platforms.create(3200, 800, 'ground');
+                platforms.create(3800, 700, 'ground');
+                platforms.create(3400, 605, 'ground');
+                
+                //sol//
+
+                platforms.create(1000, 1065, 'ground');
+                platforms.create(500, 1065, 'ground');
+                platforms.create(1500, 1065, 'ground');
+                platforms.create(1700, 1065, 'ground');
+                platforms.create(2000, 1065, 'ground');
+                platforms.create(2200, 1065, 'ground');
+                platforms.create(2600, 1065, 'ground');
+                platforms.create(3000, 1065, 'ground');
+                platforms.create(3400, 1065, 'ground');
+                platforms.create(3800, 1065, 'ground');
+                platforms.create(4000, 1065, 'ground');
                 player = this.physics.add.sprite(100, 450, 'perso');
-                player.setBounce(0.2);
+                player.setBounce(0.02);
                 player.setCollideWorldBounds(true);
                 this.physics.add.collider(player, platforms);
                 this.anims.create({
@@ -87,7 +132,7 @@
                 //affiche un texte à l’écran, pour le score
                 stars = this.physics.add.group({
                     key: 'star', repeat: 11,
-                    setXY: { x: 12, y: 0, stepX: 70 }
+                    setXY: { x: 50, y: 0, stepX: 700 }
                 });
                 stars.children.iterate(function (child) {
                     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -97,6 +142,9 @@
                 this.physics.add.overlap(player, stars, collectStar, null, this);
                 //le contact perso/étoile ne génère pas de collision (overlap)
                 //mais en revanche cela déclenche une fonction collectStar
+                this.physics.world.setBounds(0,0,5760,1080);
+                this.cameras.main.setBounds(0,0,5760,1080);
+                this.cameras.main.startFollow(player,false,1,1,0,150);
 
             }
             function update(){
@@ -134,8 +182,8 @@
                     stars.children.iterate(function (child) {
                         child.enableBody(true, child.x, 0, true, true);
                     }); // on les affiche toutes de nouveau
-                    var x = (player.x < 400) ? Phaser.Math.Between(400, 800) :
-                    Phaser.Math.Between(0, 400);
+                    var x = (player.x < 400) ? Phaser.Math.Between(450, 1500) :
+                    Phaser.Math.Between(0, 1000);
                     // si le perso est à gauche de l’écran, on met une bombe à droite
                     // si non, on la met à gauche de l’écran
                     var bomb = bombs.create(x, 16, 'bomb');
