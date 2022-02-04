@@ -24,10 +24,13 @@
             new Phaser.Game(config);
             function preload(){
                 this.load.image('star', 'assets/star.png');
-                this.load.image('ground', 'assets/platform.png');
-                this.load.image('sky', 'assets/sky.png');
+                this.load.image('ground', 'assets/solsang.png');
+                this.load.image('monstre', 'assets/Yetilldo.png');
+                this.load.image('glaçon', 'assets/glaceàpic.png');
+                this.load.image('pic', 'assets/picglace.png');
                 this.load.image('bomb', 'assets/bomb.png');
                 this.load.image('Montagne', 'assets/Montagne-PNG.png');
+                this.load.image('Background', 'assets/backgroundneige.png');
                 this.load.spritesheet('perso','assets/perso.png',
                 { frameWidth: 32, frameHeight: 48 });
             }
@@ -69,7 +72,7 @@
 
 
             function create(){
-                this.add.image(400, 300, 'sky');
+                this.add.image(2800, 600, 'Background');
                 this.add.image(4000, 3000, 'star');
                 platforms = this.physics.add.staticGroup();
                 platforms.create(400, 1050, 'ground').setScale(2).refreshBody();
@@ -104,6 +107,25 @@
                 platforms.create(3400, 1065, 'ground');
                 platforms.create(3800, 1065, 'ground');
                 platforms.create(4000, 1065, 'ground');
+                platforms.create(4500, 1065, 'ground');
+                platforms.create(4900, 1065, 'ground');
+                platforms.create(5200, 1065, 'ground');
+
+                //monstre//
+
+                this.add.image(4500, 600, 'monstre');
+
+                //premier plan//
+
+                this.add.image(400, 960, 'pic');
+                this.add.image(50000, 960, 'pic');
+                this.add.image(4000, 960, 'pic');
+                this.add.image(700, 1000, 'glaçon');
+                this.add.image(1600, 1000, 'glaçon');
+                this.add.image(3800, 1000, 'glaçon');
+                
+
+
                 player = this.physics.add.sprite(100, 450, 'perso');
                 player.setBounce(0.02);
                 player.setCollideWorldBounds(true);
